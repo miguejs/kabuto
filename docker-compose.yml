@@ -1,0 +1,29 @@
+version: '2'
+
+volumes:
+  npm:
+    driver: local
+  postgres:
+services:
+  postgres:
+    image: 'postgres:9.5'
+    environment:
+      POSTGRES_USER: 'omastar'
+      POSTGRES_PASSWORD: 'yourpassword'
+      DATABASE_URL: postgresql://omastar:yourpassword@postgres:5432/omastar?encoding=utf8&pool=5&timeout=5000
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+  web:
+    image: kabuto:development
+    build:
+      context: .
+    command: npm start
+    ports:
+      - 1337:1337
+    volumes:
+      - .:/usr/src/kabuto
+    working_dir: /usr/src/kabuto
+    tty: true
+    stdin_open: true
