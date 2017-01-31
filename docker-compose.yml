@@ -10,18 +10,25 @@ services:
     environment:
       POSTGRES_USER: 'omastar'
       POSTGRES_PASSWORD: 'yourpassword'
-      DATABASE_URL: postgresql://omastar:yourpassword@postgres:5432/omastar?encoding=utf8&pool=5&timeout=5000
+      DATABASE_URL: postgresql://omastar:yourpassword@postgres:5432/omastar_development?encoding=utf8&pool=5&timeout=5000
     ports:
       - '5432:5432'
     volumes:
       - 'postgres:/var/lib/postgresql/data'
+      - ./backups:/backups
   web:
+    depends_on:
+      - 'postgres'
     image: kabuto:development
+    environment:
+      POSTGRES_USER: 'omastar'
+      POSTGRES_PASSWORD: 'yourpassword'
+      DATABASE_URL: postgresql://omastar:yourpassword@postgres:5432/omastar_development?encoding=utf8&pool=5&timeout=5000
     build:
       context: .
     command: npm start
     ports:
-      - 1337:1337
+      - 4000:4000
     volumes:
       - .:/usr/src/kabuto
     working_dir: /usr/src/kabuto

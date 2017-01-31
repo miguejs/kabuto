@@ -4,11 +4,13 @@ ADD . /usr/src/kabuto
 
 WORKDIR /usr/src/kabuto
 
-RUN npm install -g sails 
+RUN npm install express -g
 
-RUN npm install -g vue-cli
+RUN npm install express-generator -g
 
-EXPOSE 1337
+RUN npm install -g sequelize-cli
 
-CMD ["npm", "start"] 
+EXPOSE 4000
+
+CMD ['npm','start']
 
