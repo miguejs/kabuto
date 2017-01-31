@@ -6,4 +6,5 @@ module.exports = (app) => {
   }));
 
   app.get('/api/products', productsController.list);
+  app.get('/api/products/:productId', productsController.retrieve);
 };
