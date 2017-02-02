@@ -10,6 +10,8 @@ RUN npm install express-generator -g
 
 RUN npm install -g sequelize-cli
 
+RUN npm install
+
 EXPOSE 4000
 
 CMD ['npm','start']

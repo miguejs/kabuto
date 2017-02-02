@@ -1,4 +1,5 @@
 const Product = require('../models').Product;
+var strftime = require('strftime')
 
 module.exports = {
   list(req, res) {
@@ -9,10 +10,6 @@ module.exports = {
   retrieve(req, res) {
     return Product
       .findById(req.params.productId, {
-        // include: [{
-        //   model: TodoItem,
-        //   as: 'todoItems',
-        // }],
       })
       .then(product => {
         if (!product) {
@@ -20,11 +17,20 @@ module.exports = {
             message: 'Product Not Found',
           });
         }
-        res.io.emit("products", product);
-        return res.status(200).send({
-           message: 'Product send',
-        });
+        product.lastBid().then(function(bid) {
+          bid = bid[0]
+          data = {
+            finish_time: strftime('%m/%e/%Y %H:%M:%S',product.finish_time ),
+            product_id: product.id,
+            amount: bid.amount_cents
+          }
+          res.io.emit("products", data);
+
+          return res.status(200).send({
+            data: data
+          });
+        })
       })
-    .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send(error));
   }
 };
